@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, TextInput, ImageBackground, Button, KeyboardAvoidingView, Platform } from "react-native";
-
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { auth } from "../firebase";
 import InlineTextButton from "../components/InlineTextButton";
 import AppStyles from "../styles/AppStyles";
 
@@ -22,24 +23,37 @@ export default function SignUp({ navigation }) {
     setValue(value);
   };
 
+  let signUp = () => {
+    if (password === confirmPassword) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          sendEmailVerification(auth.currentUser);
+          navigation.navigate("ToDo", { user: userCredential.user });
+        })
+        .catch((error) => {
+          setValidationMessage(error.message);
+        });
+    }
+  };
+
   return (
-    <ImageBackground style={AppStyles.container} source={background}>
+    <ImageBackground style={AppStyles.imageContainer} source={background}>
       <KeyboardAvoidingView
         style={AppStyles.backgroundCover}
         behavior={Platform.OS === "ios" ? "padding" : null}
         keyboardVerticalOffset={60}
       >
         <Text style={[AppStyles.lightText, AppStyles.header]}>Sign Up</Text>
-        <Text style={[AppStyles.errorText, AppStyles.topMargin]}>{validationMessage}</Text>
+        <Text style={[AppStyles.errorText, AppStyles.topMargin1]}>{validationMessage}</Text>
         <TextInput
-          style={[AppStyles.textInput, AppStyles.lightTextInput, AppStyles.lightText]}
+          style={[AppStyles.textInput, AppStyles.darkTextInput, AppStyles.lightText]}
           placeholder="Email"
           placeholderTextColor="#bebebe"
           value={email}
           onChangeText={setEmail}
         />
         <TextInput
-          style={[AppStyles.textInput, AppStyles.lightTextInput, AppStyles.lightText]}
+          style={[AppStyles.textInput, AppStyles.darkTextInput, AppStyles.lightText]}
           placeholder="Password"
           placeholderTextColor="#bebebe"
           secureTextEntry={true}
@@ -47,7 +61,7 @@ export default function SignUp({ navigation }) {
           onChangeText={(value) => validateAndSet(value, confirmPassword, setPassword)}
         />
         <TextInput
-          style={[AppStyles.textInput, AppStyles.lightTextInput, AppStyles.lightText]}
+          style={[AppStyles.textInput, AppStyles.darkTextInput, AppStyles.lightText]}
           placeholder="Confirm Password"
           placeholderTextColor="#bebebe"
           secureTextEntry={true}
@@ -58,7 +72,7 @@ export default function SignUp({ navigation }) {
           <Text style={AppStyles.lightText}>Already have an account? </Text>
           <InlineTextButton text=" Login" onPress={() => navigation.popToTop()} />
         </View>
-        <Button title="Sign Up" color="#f7b267" />
+        <Button title="Sign Up" onPress={signUp} color="#f7b267" />
       </KeyboardAvoidingView>
     </ImageBackground>
   );
