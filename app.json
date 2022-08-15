@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TodoApp2.0Auth",
-    "slug": "TodoApp2.0Auth",
+    "name": "TodoApp2_0auth",
+    "slug": "TodoApp2_0auth",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,9 +14,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
