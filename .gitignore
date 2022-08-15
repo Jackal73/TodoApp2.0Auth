@@ -13,3 +13,9 @@ package-lock.json
 
 # macOS
 .DS_Store
+
+ToDo1.js
+ToDo5.js
+TodoList5.js
+AddTodoModal5.js
+AddListModal5.js
